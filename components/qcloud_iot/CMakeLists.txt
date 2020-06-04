@@ -1,4 +1,4 @@
-set(component_srcs 
+set(src_dirs 
     "qcloud_iot_c_sdk/sdk_src"
     "qcloud_iot_c_sdk/platform"
     )
@@ -9,8 +9,7 @@ set(include_dirs
 	"qcloud_iot_c_sdk/sdk_src/internal_inc"
     )
 
-idf_component_register(SRCS "${component_srcs}"
+idf_component_register(SRC_DIRS "${src_dirs}"
                        INCLUDE_DIRS "${include_dirs}"
                        REQUIRES mbedtls
                        )
-                       
