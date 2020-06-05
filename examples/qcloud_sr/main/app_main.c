@@ -91,6 +91,7 @@ static void sr_cmd(void *arg)
         case 1:
         case 2:
             g_leds->set_rgb(g_leds, led_color.r, led_color.g, led_color.b);
+            qcloud_iot_explorer_switch(1);
             break;
 
         case 3:
@@ -105,6 +106,7 @@ static void sr_cmd(void *arg)
 
             g_leds->get_rgb(g_leds, &led_color.r, &led_color.g, &led_color.b);
             g_leds->set_rgb(g_leds, 0, 0, 0);
+            qcloud_iot_explorer_switch(0);
         }
         break;
 
@@ -361,11 +363,13 @@ void app_main(void)
     }
 
     speech_recognition_init();
-    xTaskCreate(qcloud_demo_task, "qcloud_demo_task", 16384, NULL, 3, NULL);
 
     g_leds->set_rgb(g_leds, 120, 120, 120);
     g_leds->get_rgb(g_leds, &led_color.r, &led_color.g, &led_color.b);
     sr_handler_install(SR_CB_TYPE_WAKE, sr_wake, NULL);
     sr_handler_install(SR_CB_TYPE_CMD, sr_cmd, NULL);
     sr_handler_install(SR_CB_TYPE_CMD_EXIT, sr_cmd_exit, NULL);
+
+    xTaskCreate(qcloud_demo_task, "qcloud_demo_task", 16384, NULL, 3, NULL);
+
 }

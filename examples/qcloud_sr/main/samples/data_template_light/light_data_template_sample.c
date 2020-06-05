@@ -72,7 +72,7 @@ static void _init_data_template(void)
     memset((void *) & sg_ProductData, 0, sizeof(ProductDataDefine));
 
     sg_ProductData.m_light_switch = 0;
-    sg_DataTemplate[0].data_property.key  = "power_switch";
+    sg_DataTemplate[0].data_property.key  = "command_light";
     sg_DataTemplate[0].data_property.data = &sg_ProductData.m_light_switch;
     sg_DataTemplate[0].data_property.type = TYPE_TEMPLATE_BOOL;
 
@@ -410,6 +410,7 @@ static int _register_data_template_property(void *pTemplate_client)
     return QCLOUD_RET_SUCCESS;
 }
 
+#ifdef EVENT_POST_ENABLED
 /*get property state, changed or not*/
 static eDataState  get_property_state(void *pProperyData)
 {
@@ -424,7 +425,7 @@ static eDataState  get_property_state(void *pProperyData)
     Log_e("no property matched");
     return eNOCHANGE;
 }
-
+#endif
 
 /*set property state, changed or no change*/
 static void  set_propery_state(void *pProperyData, eDataState state)
@@ -523,7 +524,7 @@ static void cycle_report(Timer *reportTimer)
 static void _refresh_local_property(void)
 {
     //add your local property refresh logic, cycle report for example
-    cycle_report(&sg_reportTimer);
+    //cycle_report(&sg_reportTimer);
 }
 
 /* demo for up-stream code */
@@ -594,6 +595,12 @@ static void *template_yield_thread(void *ptr)
 }
 #endif
 
+void qcloud_iot_explorer_switch(bool command_light)
+{
+    sg_ProductData.m_light_switch = command_light;
+    set_propery_state(&sg_ProductData.m_light_switch, eCHANGED);
+    Log_i("qcloud_iot_explorer_switch %d", command_light);
+}
 
 int qcloud_iot_explorer_demo(eDemoType eType)
 {

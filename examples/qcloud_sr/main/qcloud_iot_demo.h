@@ -27,7 +27,7 @@ typedef enum {
     eDEMO_DEFAULT
 } eDemoType;
 
-
+void qcloud_iot_explorer_switch(bool command_light);
 int qcloud_iot_explorer_demo(eDemoType eType);
 
 int qcloud_iot_hub_demo(void);
